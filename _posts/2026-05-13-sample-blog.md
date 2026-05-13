@@ -23,30 +23,39 @@ $$P(H|D) = \frac{P(D|H) P(H)}{P(D)}$$
 
 ### The Four Pillars of the Equation
 
-* $P(H)$ — **The Prior:** What you believe about the hypothesis *before* seeing any data. In a neural network, this is analogous to your weight initialization or regularizer. It represents your base assumptions about the world.
-* $P(D|H)$ — **The Likelihood:** If your hypothesis were perfectly true, how likely is it that you would observe the data you just saw? In training a model, this is the core of your loss function. You want to find the hypothesis (weights) that makes your training data look highly probable.
-* $P(D)$ — **The Evidence:** The total probability of observing the data under all possible hypotheses. In applied ML, calculating this for millions of parameters is usually computationally impossible. Fortunately, because it's just a normalizing constant to ensure the probabilities sum to 1, we often ignore it and focus on maximizing the numerator ($P(D|H) P(H)$).
-* $P(H|D)$ — **The Posterior:** What we actually want to find. This is your updated belief. It answers the question: "Given the training data I just processed, what is the probability that these specific model parameters are the correct ones?"
+* **$P(H)$ — The Prior:** What you believe about the hypothesis *before* seeing any data. In a neural network, this is analogous to your weight initialization or regularizer. It represents your base assumptions about the world.
+* **$P(D|H)$ — The Likelihood:** If your hypothesis were perfectly true, how likely is it that you would observe the data you just saw? In training a model, this is the core of your loss function. You want to find the hypothesis (weights) that makes your training data look highly probable.
+* **$P(D)$ — The Evidence:** The total probability of observing the data under all possible hypotheses. In applied ML, calculating this for millions of parameters is usually computationally impossible. Fortunately, because it's just a normalizing constant to ensure the probabilities sum to 1, we often ignore it and focus on maximizing the numerator ($P(D|H) P(H)$).
+* **$P(H|D)$ — The Posterior:** What we actually want to find. This is your updated belief. It answers the question: "Given the training data I just processed, what is the probability that these specific model parameters are the correct ones?"
 
-## Why This Matters for Complex ML Architectures
 
-When you scale up to massive architectures or complex retrieval systems, this basic theorem is running under the hood in various forms.
 
-### 1. Large Language Models (LLMs) and Next-Token Prediction
+Let's untangle this equation using an example.
 
-When training or running inference on an LLM, the model is constantly calculating a posterior probability. Given a sequence of context tokens (the Evidence/Data), the model needs to determine the most likely next token (the Hypothesis).
+Imagine:
 
-The network learns the *Prior* (the general frequency and structure of language) and the *Likelihood* (how certain words relate to others in the training corpus) to spit out a *Posterior* probability distribution over the entire vocabulary. This is why techniques like temperature scaling during inference are so effective; they directly manipulate that posterior distribution to be sharper (more deterministic) or flatter (more creative).
+* **Hypothesis ($H$):** There is a blue tiger in the Amazon forest.
+* **Data ($D$):** You find a tuft of blue fur caught on a branch in the Amazon.
 
-### 2. Retrieval-Augmented Generation (RAG)
+Here is the difference:
 
-In a RAG pipeline, Bayes' Theorem conceptually drives the retrieval mechanism. You have a vast database of documents (Priors). When a user inputs a query (Data), the embedding model calculates the Likelihood that a specific document answers that query. The retrieval step is essentially returning the documents with the highest Posterior probability of being relevant, which the generative model then uses to ground its response.
+### 1. The Likelihood: $P(D|H)$
 
-### 3. Maximum A Posteriori (MAP) vs. Maximum Likelihood Estimation (MLE)
+This matches your first sentence: *"what is the probability of the data you saw assuming the hypothesis is true."*
 
-Most standard neural network training uses MLE—finding the weights that maximize $P(D|H)$. However, when you add regularization (like L1 or L2 penalties), you transition to MAP estimation. Regularization is mathematically equivalent to injecting a *Prior* $P(H)$ into the training process.
+* **In the example:** **IF** it is a true fact that a blue tiger lives in the Amazon ($H$ is true), how likely are you to find a tuft of blue fur ($D$)?
+* **The answer:** Probably pretty high! If the tiger is there, it makes sense you might find its fur.
 
-* **L2 Regularization (Weight Decay):** Assumes a Gaussian prior (believes weights should naturally cluster near zero).
-* **L1 Regularization:** Assumes a Laplace prior (believes most weights should be exactly zero, encouraging sparsity).
+### 2. The Posterior: $P(H|D)$
 
-By grounding your understanding in the relationship between Prior, Likelihood, and Posterior, advanced concepts like Bayesian Neural Networks, variational inference, or even how quantization impacts the probability distributions of model weights become much more intuitive to deconstruct.
+This matches the second part of your thought: *"what is the probability of our hypothesis being true, based on our data."*
+
+* **In the example:** Given that you **actually hold** this tuft of blue fur in your hand ($D$ is a known fact), what is the probability that a blue tiger exists ($H$)?
+* **The answer:** This is where the **Prior** comes in. Even though finding blue fur ($D$) makes a blue tiger ($H$) more likely than it was yesterday, your Prior belief $P(H)$ that blue tigers exist is virtually zero (it might just be a blue macaw feather, or synthetic fabric from a backpack). So, your Posterior probability—your updated belief that a blue tiger exists—increases slightly because of the evidence, but remains very low overall.
+
+### Summary for ML
+
+* **Likelihood:** If these model weights were perfect, how likely is it that they would generate this exact training data?
+* **Posterior:** Given this exact training data, how likely is it that these model weights are the perfect ones? (This is what you want to figure out!).
+
+Does mapping it out with the blue fur evidence help clarify the difference between the Likelihood and the Posterior?
