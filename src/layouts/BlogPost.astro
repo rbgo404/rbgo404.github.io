@@ -1,0 +1,52 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { title, date, description } = post.data;
+const formattedDate = new Date(date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+    />
+    <style>
+      body {
+        font-family: Georgia, serif;
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+        line-height: 1.7;
+        color: #222;
+      }
+      nav { margin-bottom: 2rem; }
+      nav a { color: #555; text-decoration: none; }
+      nav a:hover { text-decoration: underline; }
+      h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+      .meta { color: #666; font-size: 0.9rem; margin-bottom: 2rem; }
+    </style>
+  </head>
+  <body>
+    <nav><a href="/">← Home</a></nav>
+    <article>
+      <h1>{title}</h1>
+      <p class="meta">{formattedDate}</p>
+      <slot />
+    </article>
+  </body>
+</html>
