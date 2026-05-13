@@ -1,0 +1,6 @@
+title: rbgo's blog
+description: A blog about whatever I feel like writing about.
+author: rbgo
+theme: minima
+plugins:
+  - jekyll-feed
