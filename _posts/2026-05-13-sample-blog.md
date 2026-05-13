@@ -23,10 +23,10 @@ $$P(H|D) = \frac{P(D|H) P(H)}{P(D)}$$
 
 ### The Four Pillars of the Equation
 
-* **$P(H)$ — The Prior:** What you believe about the hypothesis *before* seeing any data. In a neural network, this is analogous to your weight initialization or regularizer. It represents your base assumptions about the world.
-* **$P(D|H)$ — The Likelihood:** If your hypothesis were perfectly true, how likely is it that you would observe the data you just saw? In training a model, this is the core of your loss function. You want to find the hypothesis (weights) that makes your training data look highly probable.
-* **$P(D)$ — The Evidence:** The total probability of observing the data under all possible hypotheses. In applied ML, calculating this for millions of parameters is usually computationally impossible. Fortunately, because it's just a normalizing constant to ensure the probabilities sum to 1, we often ignore it and focus on maximizing the numerator ($P(D|H) P(H)$).
-* **$P(H|D)$ — The Posterior:** What we actually want to find. This is your updated belief. It answers the question: "Given the training data I just processed, what is the probability that these specific model parameters are the correct ones?"
+* $P(H)$ — **The Prior:** What you believe about the hypothesis *before* seeing any data. In a neural network, this is analogous to your weight initialization or regularizer. It represents your base assumptions about the world.
+* $P(D|H)$ — **The Likelihood:** If your hypothesis were perfectly true, how likely is it that you would observe the data you just saw? In training a model, this is the core of your loss function. You want to find the hypothesis (weights) that makes your training data look highly probable.
+* $P(D)$ — **The Evidence:** The total probability of observing the data under all possible hypotheses. In applied ML, calculating this for millions of parameters is usually computationally impossible. Fortunately, because it's just a normalizing constant to ensure the probabilities sum to 1, we often ignore it and focus on maximizing the numerator ($P(D|H) P(H)$).
+* $P(H|D)$ — **The Posterior:** What we actually want to find. This is your updated belief. It answers the question: "Given the training data I just processed, what is the probability that these specific model parameters are the correct ones?"
 
 ## Why This Matters for Complex ML Architectures
 
